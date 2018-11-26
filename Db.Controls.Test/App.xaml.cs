@@ -19,30 +19,36 @@
 
 #endregion MIT License (c) 2018 Dan Brandt
 
-namespace Db
+using System;
+using System.Windows;
+
+namespace Db.Controls.Test
 {
-    /// <summary>Methods for calculating canonical modulo.</summary>
-    public static class Mod
+    /// <summary>Interaction logic for App.xaml</summary>
+    public partial class App : Application
     {
-        /// <summary>Calculate x % y, where -1 % 3 = 2</summary>
-        public static int CanonicalModulo(int dividend, int divisor)
+        protected override void OnExit(ExitEventArgs e)
         {
-            int temp = dividend % divisor;
-            return temp < 0 ? temp + divisor : temp;
+            _mainWindow.Close();
+            _mainWindow = null;
+
+            (_viewModel as IDisposable)?.Dispose();
+            _viewModel = null;
+
+            base.OnExit(e);
         }
 
-        /// <summary>Calculate x % y, where -1 % 3 = 2</summary>
-        public static float CanonicalModulo(float dividend, float divisor)
+        protected override void OnStartup(StartupEventArgs e)
         {
-            float temp = dividend % divisor;
-            return temp < 0 ? temp + divisor : temp;
+            base.OnStartup(e);
+
+            _viewModel = new DraggableMapControlTestDataContext();
+            _mainWindow = new MainWindow();
+            _mainWindow.DataContext = _viewModel;
+            _mainWindow.Show();
         }
 
-        /// <summary>Calculate x % y, where -1 % 3 = 2</summary>
-        public static double CanonicalModulo(double dividend, double divisor)
-        {
-            double temp = dividend % divisor;
-            return temp < 0 ? temp + divisor : temp;
-        }
+        private MainWindow _mainWindow;
+        private DraggableMapControlTestDataContext _viewModel;
     }
 }

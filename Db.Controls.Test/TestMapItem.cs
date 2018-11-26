@@ -19,30 +19,57 @@
 
 #endregion MIT License (c) 2018 Dan Brandt
 
-namespace Db
+using MapControl;
+using System.Windows;
+using System.Windows.Controls;
+
+namespace Db.Controls.Test
 {
-    /// <summary>Methods for calculating canonical modulo.</summary>
-    public static class Mod
+    public class TestMapItem : TextBlock, IMapElement
     {
-        /// <summary>Calculate x % y, where -1 % 3 = 2</summary>
-        public static int CanonicalModulo(int dividend, int divisor)
+        public TestMapItem()
         {
-            int temp = dividend % divisor;
-            return temp < 0 ? temp + divisor : temp;
+            setText();
         }
 
-        /// <summary>Calculate x % y, where -1 % 3 = 2</summary>
-        public static float CanonicalModulo(float dividend, float divisor)
+        public MapBase ParentMap
         {
-            float temp = dividend % divisor;
-            return temp < 0 ? temp + divisor : temp;
+            get => _parentMap;
+            set
+            {
+                if (_parentMap != value)
+                {
+                    if (_parentMap != null)
+                    {
+                        _parentMap.ViewportChanged -= onViewportChanged;
+                    }
+
+                    _parentMap = value;
+
+                    if (_parentMap != null)
+                    {
+                        _parentMap.ViewportChanged += onViewportChanged;
+                    }
+
+                    setText();
+                }
+            }
         }
 
-        /// <summary>Calculate x % y, where -1 % 3 = 2</summary>
-        public static double CanonicalModulo(double dividend, double divisor)
+        private MapBase _parentMap;
+
+        private void onViewportChanged(object sender, ViewportChangedEventArgs e)
         {
-            double temp = dividend % divisor;
-            return temp < 0 ? temp + divisor : temp;
+            setText();
+        }
+
+        private void setText()
+        {
+            if (_parentMap != null)
+            {
+                Location topLeft = _parentMap.ViewportPointToLocation(new Point(0, 0));
+                Text = $"Lat: {topLeft.Latitude} Lon: {topLeft.Longitude}";
+            }
         }
     }
 }

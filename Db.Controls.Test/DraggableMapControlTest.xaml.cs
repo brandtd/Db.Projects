@@ -19,30 +19,16 @@
 
 #endregion MIT License (c) 2018 Dan Brandt
 
-namespace Db
+using System.Windows.Controls;
+
+namespace Db.Controls.Test
 {
-    /// <summary>Methods for calculating canonical modulo.</summary>
-    public static class Mod
+    /// <summary>Interaction logic for DraggableMapControlTest.xaml</summary>
+    public partial class DraggableMapControlTest : UserControl
     {
-        /// <summary>Calculate x % y, where -1 % 3 = 2</summary>
-        public static int CanonicalModulo(int dividend, int divisor)
+        public DraggableMapControlTest()
         {
-            int temp = dividend % divisor;
-            return temp < 0 ? temp + divisor : temp;
-        }
-
-        /// <summary>Calculate x % y, where -1 % 3 = 2</summary>
-        public static float CanonicalModulo(float dividend, float divisor)
-        {
-            float temp = dividend % divisor;
-            return temp < 0 ? temp + divisor : temp;
-        }
-
-        /// <summary>Calculate x % y, where -1 % 3 = 2</summary>
-        public static double CanonicalModulo(double dividend, double divisor)
-        {
-            double temp = dividend % divisor;
-            return temp < 0 ? temp + divisor : temp;
+            InitializeComponent();
         }
     }
 }
